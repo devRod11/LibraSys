@@ -1,5 +1,6 @@
 import "express";
 import "express-serve-static-core";
+import { JwtPayload } from "../middleware/auth.middleware";
 
 declare global {
   namespace Express {
@@ -21,4 +22,10 @@ declare global {
     };
   }
 }
+    namespace Express {
+    interface Request {
+      user?: JwtPayload;
+    }
+  }
+  export {};
 }
