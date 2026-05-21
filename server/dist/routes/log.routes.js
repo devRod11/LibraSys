@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const log_controller_1 = require("../controllers/log.controller");
+const router = (0, express_1.Router)();
+router.get("/", log_controller_1.getAllLogs);
+router.get("/user/:user_id", log_controller_1.getLogsByUser);
+router.get("/book/:book_id", log_controller_1.getLogsByBook);
+router.put("/:id/read", log_controller_1.markLogAsRead);
+router.put("/read-all", log_controller_1.markAllLogsAsRead);
+exports.default = router;

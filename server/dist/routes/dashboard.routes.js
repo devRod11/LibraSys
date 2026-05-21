@@ -1,0 +1,13 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const dashboard_controller_1 = require("../controllers/dashboard.controller");
+const auth_middleware_1 = require("../middleware/auth.middleware");
+const router = (0, express_1.Router)();
+router.get("/stats", dashboard_controller_1.getDashboardStats);
+router.get("/borrow-trends", dashboard_controller_1.getBorrowTrends);
+router.get("/categories", dashboard_controller_1.getCategoryDistribution);
+router.get("/top-books", dashboard_controller_1.getTopBorrowedBooks);
+router.get("/active-users", dashboard_controller_1.getActiveUsers);
+router.get("/student", auth_middleware_1.verifyToken, dashboard_controller_1.getStudentDashboard);
+exports.default = router;
