@@ -16,11 +16,23 @@ export type StudentLoginResponse = {
   };
 };
 
-export type AdminLoginResponse = {
-  message: string;
-  requires2FA: true;
-  tempToken: string;
-};
+export type AdminLoginResponse =
+  | {
+      requires2FA: true;
+      tempToken: string;
+      message: string;
+    }
+  | {
+      requires2FA?: false;
+      token: string;
+      user: {
+        id: number;
+        role: "admin" | "student";
+        full_name: string;
+        email: string;
+      };
+      message: string;
+    };
 
 // 👤 STUDENT LOGIN
 export const studentLogin = async (
