@@ -54,7 +54,11 @@ router.post("/login", async (req: Request, res: Response) => {
         expiresAt: Date.now() + 2 * 60 * 1000,
       });
 
-      await sendOTPEmail(user.email, code);
+      try {
+        await sendOTPEmail(user.email, code);
+      } catch (err) {
+        console.error("Email error:", err);
+      }
 
       return res.json({
         message: "2FA code sent to email",
