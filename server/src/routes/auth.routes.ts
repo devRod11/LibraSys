@@ -99,14 +99,17 @@ router.get("/me", verifyToken, async (req: Request, res: Response) => {
 
     const user = result.rows[0];
 
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
+    if (!user || !user.password) {
+      return res.status(401).json({ message: "Invalid credentials" });
     }
+    
+    const validPassword = await bcrypt.compare(password, user.password);
 
     return res.json(user);
   } catch (err: any) {
     return res.status(500).json({
       message: "Server error",
+      console.error("LOGIN ERROR:", err);
       error: err.message,
     });
   }
