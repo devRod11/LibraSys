@@ -16,27 +16,38 @@ export default function AdminLogin() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
-
+  
     if (!email || !password) {
       setError("Please enter your credentials.");
       return;
     }
-
+  
     try {
       setLoading(true);
-
+  
       const res = await adminLogin({ email, password });
-      // 🧑‍💼 Admin 2FA flow
+  
+      // 🔐 Admin 2FA flow
       if (res.requires2FA) {
         if (!res.tempToken) {
           throw new Error("Missing tempToken for 2FA");
         }
+  
         localStorage.setItem("temp_token", res.tempToken);
-        setLoading(false);
         navigate("/login/admin/2fa");
         return;
       }
-      throw new Error("Unexpected login response");
+  
+      // ✅ NORMAL LOGIN (non-admin or already verified)
+      if (res.token) {
+        localStorage.setItem("token", res.token);
+        navigate("/admin/dashboard"); // or wherever admin goes
+        return;
+      }
+  
+      // ❌ fallback error
+      setError(res.message || "Invalid login response");
+  
     } catch (err: any) {
       setError(err.message || "Login failed");
     } finally {
