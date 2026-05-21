@@ -14,7 +14,7 @@ export const verifyToken = (
   try {
     const authHeader = req.headers.authorization;
 
-    if (!authHeader) {
+    if (!authHeader?.startsWith("Bearer ")) {
       return res.status(401).json({ message: "No token provided" });
     }
 
@@ -24,14 +24,18 @@ export const verifyToken = (
       return res.status(401).json({ message: "Invalid token format" });
     }
 
-    const decoded = jwt.verify(
-      token,
-      process.env.JWT_SECRET!
-    ) as JwtPayload;
+    const secret = process.env.JWT_SECRET;
 
-    req.user = decoded; // ✅ now valid
+    if (!secret) {
+      console.error("JWT_SECRET is missing");
+      return res.status(500).json({ message: "Server misconfiguration" });
+    }
 
-    return next();
+    const decoded = jwt.verify(token, secret) as JwtPayload;
+
+    (req as any).user = decoded; // ✅ safe production fallback
+
+    next();
   } catch (err) {
     return res.status(401).json({ message: "Invalid or expired token" });
   }
