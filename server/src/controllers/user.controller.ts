@@ -12,7 +12,11 @@ export const getMe = async (
 
   try {
 
-    const userId = req.user.id;
+    const userId = req.user?.id;
+
+    if (!userId) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
 
     const user = await db.query(
       `
@@ -49,7 +53,11 @@ export const updateMe = async (
 
   try {
 
-    const userId = req.user.id;
+    const userId = req.user?.id;
+
+    if (!userId) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
 
     const data = req.body;
 
@@ -103,7 +111,11 @@ export const changePassword = async (
 
   try {
 
-    const userId = req.user.id;
+    const userId = req.user?.id;
+
+    if (!userId) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
 
     const {
       oldPassword,
