@@ -90,7 +90,11 @@ router.post("/login", async (req: Request, res: Response) => {
 // 👤 ME
 router.get("/me", verifyToken, async (req: Request, res: Response) => {
   try {
-    const userId = (req as any).user.id;
+    const userId = req.user?.id;
+
+    if (!userId) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
 
     const result = await db.query(
       "SELECT id, full_name, email, role FROM users WHERE id = $1",
@@ -99,17 +103,16 @@ router.get("/me", verifyToken, async (req: Request, res: Response) => {
 
     const user = result.rows[0];
 
-    if (!user || !user.password) {
-      return res.status(401).json({ message: "Invalid credentials" });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
     }
-    
-    const validPassword = await bcrypt.compare(password, user.password);
 
     return res.json(user);
   } catch (err: any) {
+    console.error("GET ME ERROR:", err);
+
     return res.status(500).json({
       message: "Server error",
-      console.error("LOGIN ERROR:", err);
       error: err.message,
     });
   }
