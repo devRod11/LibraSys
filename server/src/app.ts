@@ -12,16 +12,14 @@ import dashboardRoutes from "./routes/dashboard.routes";
 import userRoutes from "./routes/user.routes";
 import adminRoutes from "./routes/admin.routes";
 
+app.use(cors({
+  origin: ["https://librasys-10.onrender.com"],
+  credentials: true
+}));
+
 dotenv.config();
 
 const app = express();
-
-app.use(
-  cors({
-    origin: "https://librasys-10.onrender.com",
-    credentials: true,
-  })
-);
 
 app.use(express.json());
 app.use(helmet());
