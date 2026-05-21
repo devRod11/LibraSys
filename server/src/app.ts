@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import helmet from "helmet";
@@ -14,29 +14,29 @@ import adminRoutes from "./routes/admin.routes";
 
 dotenv.config();
 
-const PORT = process.env.PORT || 3001;
-
 const app = express();
 
-app.use(cors({
-  origin: "https://librasys-10.onrender.com",
-  credentials: true
-}));
+app.use(
+  cors({
+    origin: "https://librasys-10.onrender.com",
+    credentials: true,
+  })
+);
 
 app.use(express.json());
+app.use(helmet());
 
-app.get("/", (req, res) => {
+app.get("/", (req: Request, res: Response) => {
   res.send("LibraSys API Running 🚀");
 });
 
-app.use(helmet());
 app.use("/api/books", bookRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/borrow", borrowRoutes);
 app.use("/api/requests", requestRoutes);
-app.use("/api/logs", logRoutes); 
+app.use("/api/logs", logRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/users", userRoutes);
-app.use("/api/admin",adminRoutes);
+app.use("/api/admin", adminRoutes);
 
 export default app;
