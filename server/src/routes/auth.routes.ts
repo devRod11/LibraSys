@@ -90,11 +90,7 @@ router.post("/login", async (req: Request, res: Response) => {
 // 👤 ME
 router.get("/me", verifyToken, async (req: Request, res: Response) => {
   try {
-    const userId = req.user?.id;
-
-    if (!userId) {
-      return res.status(401).json({ message: "Unauthorized" });
-    }
+    const userId = (req as any).user.id;
 
     const result = await db.query(
       "SELECT id, full_name, email, role FROM users WHERE id = $1",
