@@ -41,7 +41,7 @@ export default function BookManagement() {
   const [fetchLoading, setFetchLoading] = useState(false);
   const [fetchSuccess, setFetchSuccess] = useState(false);
   const [dupWarning, setDupWarning] = useState(false);
-  const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
+  const [deleteConfirm, setDeleteConfirm] = useState<number | null>(null);
   const [previewBook, setPreviewBook] = useState<Book | null>(null);
 
   const filtered = books.filter(b => {
@@ -226,7 +226,7 @@ export default function BookManagement() {
     }
   };
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = async (id: number) => {
   try {
     await deleteBook(id);
 
