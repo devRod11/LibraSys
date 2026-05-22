@@ -37,3 +37,67 @@ export const sendOTPEmail = async (to: string, code: string) => {
     `,
   });
 };
+
+export const sendStudentWelcomeEmail = async (
+  to: string,
+  studentName: string,
+  studentId: string,
+  password: string
+) => {
+  await sgMail.send({
+    to,
+    from: emailFrom,
+
+    subject: "Welcome to LibraSys",
+
+    html: `
+      <div style="font-family: Arial; padding: 20px;">
+
+        <h2>Welcome to LibraSys 📚</h2>
+
+        <p>Hello <strong>${studentName}</strong>,</p>
+
+        <p>
+          Your LibraSys student account has been created successfully.
+        </p>
+
+        <div
+          style="
+            background:#f5f5f5;
+            padding:15px;
+            border-radius:8px;
+            margin-top:15px;
+          "
+        >
+
+          <p>
+            <strong>Student ID:</strong>
+            ${studentId}
+          </p>
+
+          <p>
+            <strong>Email:</strong>
+            ${to}
+          </p>
+
+          <p>
+            <strong>Password:</strong>
+            ${password}
+          </p>
+
+        </div>
+
+        <p style="margin-top:20px;">
+          You may now log in to the LibraSys system.
+        </p>
+
+        <hr />
+
+        <small>
+          LibraSys Library Management System
+        </small>
+
+      </div>
+    `,
+  });
+};
