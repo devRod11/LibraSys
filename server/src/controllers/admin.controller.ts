@@ -3,6 +3,7 @@ import csv from "csv-parser";
 import bcrypt from "bcrypt";
 import { Readable } from "stream";
 import { db } from "../db";
+import { sendStudentWelcomeEmail } from "../utils/mailer";
 
 type MulterRequest = Request & {
   file?: Express.Multer.File;
@@ -101,6 +102,13 @@ export const bulkUploadStudents = async (
                 course,
                 parsedYear,
               ]
+            );
+
+            await sendStudentWelcomeEmail(
+              email.trim().toLowerCase(),
+              full_name,
+              student_id,
+              password
             );
 
             inserted++;
