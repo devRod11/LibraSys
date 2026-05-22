@@ -17,7 +17,7 @@ dotenv.config();
 const app = express();
 
 app.use(cors({
-  origin: ["https://librasys-10.onrender.com"],
+  origin: ["https://librasys-j7xy.onrender.com"],
   credentials: true
 }));
 
