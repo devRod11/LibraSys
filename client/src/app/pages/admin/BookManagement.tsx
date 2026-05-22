@@ -54,7 +54,13 @@ export default function BookManagement() {
 
   useEffect(() => {
     fetchBooks();
-    }, []);
+  
+    socket.on("booksUpdated", fetchBooks);
+  
+    return () => {
+      socket.off("booksUpdated", fetchBooks);
+    };
+  }, []);
 
     const fetchBooks = async () => {
       try {
