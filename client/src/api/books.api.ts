@@ -12,14 +12,14 @@ export const createBook = async (data: any) => {
   });
 };
 
-export const updateBook = async (id: string, data: any) => {
+export const updateBook = async (id: number, data: any) => {
   return await client(`/api/books/${id}`, {
     method: "PUT",
     body: JSON.stringify(data),
   });
 };
 
-export const deleteBook = async (id: string) => {
+export const deleteBook = async (id: number) => {
   return await client(`/api/books/${id}`, {
     method: "DELETE",
   });
