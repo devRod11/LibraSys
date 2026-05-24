@@ -162,11 +162,26 @@ export default function StudentLogin() {
               </>
             )}
           </button>
+          </form>
           
-          {/* Privacy Policy Modal */}
+          {/* Privacy footer button */}
+          <div className="flex items-center justify-between pt-3 border-t border-gray-100 px-6 pb-6">
+            <button
+              type="button"
+              onClick={() => setShowPrivacy(true)}
+              className="flex items-center gap-1 text-blue-500 hover:text-blue-600 transition-colors"
+              style={{ fontSize: "0.75rem" }}
+            >
+              <Globe className="w-3 h-3" />
+              View Privacy Policy
+            </button>
+          </div>
+          
+          {/* Privacy Modal */}
           {showPrivacy && (
             <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
               <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl">
+                
                 <div className="flex items-center gap-2 mb-4">
                   <Lock className="w-5 h-5 text-emerald-600" />
                   <h2 className="text-lg font-semibold text-gray-800">
@@ -175,20 +190,18 @@ export default function StudentLogin() {
                 </div>
           
                 <div className="space-y-3 text-gray-600 text-sm">
-                  <p>
-                    LibraSys values your privacy and protects your personal information.
-                  </p>
+                  <p>LibraSys values your privacy and protects your personal information.</p>
           
                   <ul className="list-disc pl-5 space-y-2">
                     <li>Your student account is for authorized users only.</li>
                     <li>Do not share your password with other students.</li>
                     <li>Library activity may be monitored for security purposes.</li>
-                    <li>Borrowed books and account records are stored securely.</li>
-                    <li>Unauthorized access or misuse of the system is prohibited.</li>
+                    <li>Borrowed books and records are securely stored.</li>
+                    <li>Unauthorized access is strictly prohibited.</li>
                   </ul>
           
                   <p className="text-xs text-gray-500 pt-2 border-t">
-                    By signing in, you agree to follow the library policies and responsible system usage guidelines.
+                    By signing in, you agree to follow library policies and responsible system use.
                   </p>
                 </div>
           
@@ -200,8 +213,7 @@ export default function StudentLogin() {
                 </button>
               </div>
             </div>
-          )}
-          
+          )}          
           <div className="flex items-center justify-between pt-3 border-t border-gray-100">
             <button
               type="button"
