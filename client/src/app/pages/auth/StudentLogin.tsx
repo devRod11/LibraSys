@@ -162,7 +162,6 @@ export default function StudentLogin() {
               </>
             )}
           </button>
-          </form>
           
           {/* Privacy footer button */}
           <div className="flex items-center justify-between pt-3 border-t border-gray-100 px-6 pb-6">
