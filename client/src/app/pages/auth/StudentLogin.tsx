@@ -212,18 +212,7 @@ export default function StudentLogin() {
                 </button>
               </div>
             </div>
-          )}          
-          <div className="flex items-center justify-between pt-3 border-t border-gray-100">
-            <button
-              type="button"
-              onClick={() => setShowPrivacy(true)}
-              className="flex items-center gap-1 text-blue-500 hover:text-blue-600 transition-colors"
-              style={{ fontSize: "0.75rem" }}
-            >
-              <Globe className="w-3 h-3" />
-              View Privacy Policy
-            </button>
-          </div>
+          )}
           </form>
         </div>
       </motion.div>
