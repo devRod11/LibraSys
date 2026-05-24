@@ -153,9 +153,6 @@ export default function AdminLogin() {
                 <input type="checkbox" className="rounded border-gray-300 text-blue-600" />
                 <span className="text-gray-600" style={{ fontSize: "0.8rem" }}>Remember me</span>
               </label>
-              <button type="button" className="text-blue-600 hover:text-blue-700 transition-colors" style={{ fontSize: "0.8rem" }}>
-                Forgot password?
-              </button>
             </div>
 
             <button
