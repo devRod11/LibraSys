@@ -189,6 +189,14 @@ export const deleteStudent = async (
       });
     }
 
+    await db.query(
+      `
+      DELETE FROM activity_logs
+      WHERE user_id = $1
+      `,
+      [id]
+    );
+
     const deleted = await db.query(
       `
       DELETE FROM users
