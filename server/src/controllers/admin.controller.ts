@@ -175,7 +175,7 @@ export const deleteStudent = async (
         SELECT id
         FROM borrow_records
         WHERE user_id = $1
-        AND borrow_status = 'borrowed'
+        AND status = 'borrowed'::borrow_status
         `,
         [id]
       );
