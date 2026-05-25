@@ -12,16 +12,10 @@ import {verifyToken,} from "../middleware/auth.middleware";
 const router = Router();
 
 router.get("/stats", getDashboardStats);
-
 router.get("/borrow-trends", getBorrowTrends);
-
 router.get("/categories", getCategoryDistribution);
-
 router.get("/top-books", getTopBorrowedBooks);
-
 router.get("/active-users", getActiveUsers);
-
-router.get(
-  "/student",verifyToken,getStudentDashboard);
+router.get("/student", verifyToken, getStudentDashboard);
 
 export default router;
