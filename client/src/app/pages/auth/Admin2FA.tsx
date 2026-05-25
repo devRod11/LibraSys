@@ -5,9 +5,11 @@ import { motion } from "motion/react";
 import { verify2FA } from "../../../api/auth.api";
 import { useAppContext } from "../../context/AppContext";
 
+
 export default function Admin2FA() {
   const navigate = useNavigate();
   const { login } = useAppContext();
+  const API_URL = import.meta.env.VITE_API_URL;
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [timeLeft, setTimeLeft] = useState(120);
   const [error, setError] = useState("");
@@ -52,7 +54,7 @@ export default function Admin2FA() {
 
     setLoading(true);
 
-    await fetch("http://localhost:3001/api/auth/resend-otp", {
+    await fetch(`${API_URL}/api/auth/resend-otp`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
