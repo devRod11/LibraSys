@@ -190,18 +190,25 @@ export const deleteStudent = async (
     }
 
     await db.query(
-      `
-      DELETE FROM activity_logs
-      WHERE user_id = $1
-      `,
+      `DELETE FROM request_schedule WHERE request_id IN (SELECT id FROM book_requests WHERE user_id = $1)`,
       [id]
     );
 
+    // 3. book_requests
     await db.query(
-      `
-      DELETE FROM book_requests
-      WHERE user_id = $1
-      `,
+      `DELETE FROM book_requests WHERE user_id = $1`,
+      [id]
+    );
+
+    // 4. borrow_records
+    await db.query(
+      `DELETE FROM borrow_records WHERE user_id = $1`,
+      [id]
+    );
+
+    // 5. activity_logs
+    await db.query(
+      `DELETE FROM activity_logs WHERE user_id = $1`,
       [id]
     );
 
