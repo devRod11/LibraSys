@@ -54,7 +54,7 @@ export default function Admin2FA() {
 
     setLoading(true);
 
-    await fetch(`${API_URL}/api/auth/resend-otp`, {
+    const res = await fetch(`${API_URL}/api/auth/resend-otp`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
