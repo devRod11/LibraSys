@@ -172,29 +172,56 @@ router.post("/verify-2fa", async (req: Request, res: Response) => {
 
 // RESEND OTP
 router.post("/resend-otp", async (req: Request, res: Response) => {
-  const authHeader = req.headers.authorization;
+  try {
+    const authHeader = req.headers.authorization;
 
-  if (!authHeader?.startsWith("Bearer ")) {
-    return res.status(401).json({ message: "Invalid token" });
+    if (!authHeader?.startsWith("Bearer ")) {
+      return res.status(401).json({ message: "Invalid token" });
+    }
+
+    const oldTempToken = authHeader.split(" ")[1];
+
+    const decoded = jwt.verify(
+      oldTempToken,
+      process.env.JWT_SECRET!
+    ) as any;
+
+    const user = await db.query(
+      "SELECT email FROM users WHERE id = $1",
+      [decoded.id]
+    );
+
+    if (user.rows.length === 0) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // generate new otp
+    const code = generateOTP();
+
+    otpStore.set(decoded.id, {
+      code,
+      expiresAt: Date.now() + 2 * 60 * 1000,
+    });
+
+    await sendOTPEmail(user.rows[0].email, code);
+
+    // generate NEW temp token
+    const newTempToken = jwt.sign(
+      { id: decoded.id, role: decoded.role },
+      process.env.JWT_SECRET!,
+      { expiresIn: "5m" }
+    );
+
+    return res.json({
+      message: "OTP resent",
+      tempToken: newTempToken,
+    });
+
+  } catch (err) {
+    return res.status(401).json({
+      message: "Session expired. Please login again.",
+    });
   }
-
-  const tempToken = authHeader.split(" ")[1];
-  const decoded = jwt.verify(tempToken, process.env.JWT_SECRET!) as any;
-
-  const user = await db.query("SELECT email FROM users WHERE id=$1", [
-    decoded.id,
-  ]);
-
-  const code = generateOTP();
-
-  otpStore.set(decoded.id, {
-    code,
-    expiresAt: Date.now() + 2 * 60 * 1000,
-  });
-
-  await sendOTPEmail(user.rows[0].email, code);
-
-  return res.json({ message: "OTP resent" });
 });
 
 // REGISTER
