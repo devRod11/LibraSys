@@ -115,7 +115,7 @@ export default function StudentLogin() {
             )}
 
             <div className="space-y-1">
-              <label className="text-gray-700" style={{ fontSize: "0.85rem" }}>Student ID / Username</label>
+              <label className="text-gray-700" style={{ fontSize: "0.85rem" }}>Username</label>
               <input
                 type="text"
                 value={email}
