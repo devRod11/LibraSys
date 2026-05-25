@@ -197,6 +197,14 @@ export const deleteStudent = async (
       [id]
     );
 
+    await db.query(
+      `
+      DELETE FROM book_requests
+      WHERE user_id = $1
+      `,
+      [id]
+    );
+
     const deleted = await db.query(
       `
       DELETE FROM users
