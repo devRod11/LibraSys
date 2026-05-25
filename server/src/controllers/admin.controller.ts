@@ -129,3 +129,95 @@ export const bulkUploadStudents = async (
     });
   }
 };
+
+export const getStudents = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const result = await db.query(
+      `
+      SELECT
+        id,
+        full_name,
+        email,
+        student_id,
+        created_at
+      FROM users
+      WHERE role = 'student'
+      ORDER BY created_at DESC
+      `
+    );
+
+    return res.json({
+      students: result.rows,
+    });
+  } catch (err) {
+    console.error(err);
+
+    return res.status(500).json({
+      message:
+        "Failed to fetch students",
+    });
+  }
+};
+
+export const deleteStudent = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const { id } = req.params;
+
+    const borrowedBooks =
+      await db.query(
+        `
+        SELECT id
+        FROM borrow_records
+        WHERE user_id = $1
+        AND status = 'borrowed'
+        `,
+        [id]
+      );
+
+    if (
+      borrowedBooks.rows.length > 0
+    ) {
+      return res.status(400).json({
+        message:
+          "Cannot delete student with borrowed books",
+      });
+    }
+
+    const deleted = await db.query(
+      `
+      DELETE FROM users
+      WHERE id = $1
+      AND role = 'student'
+      RETURNING id
+      `,
+      [id]
+    );
+
+    if (
+      deleted.rows.length === 0
+    ) {
+      return res.status(404).json({
+        message:
+          "Student not found",
+      });
+    }
+
+    return res.json({
+      message:
+        "Student deleted successfully",
+    });
+  } catch (err) {
+    console.error(err);
+
+    return res.status(500).json({
+      message:
+        "Failed to delete student",
+    });
+  }
+};
