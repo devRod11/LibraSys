@@ -62,6 +62,15 @@ export default function Admin2FA() {
       },
     });
 
+    const data = await res.json();
+    
+    if (!res.ok) {
+      throw new Error(data.message);
+    }
+    
+    // SAVE NEW TEMP TOKEN
+    localStorage.setItem("temp_token", data.tempToken);
+
     setOtp(["", "", "", "", "", ""]);
     setTimeLeft(120);
     setResendDisabled(true);
